@@ -80,7 +80,35 @@ Let's explore a few differences in this newly imagined app from the previous cod
 The file `lib/cli.py` contains a command line interface outline for our client facing company database
 application. The CLI displays a menu of commands for the user to select from.
 
-Upon startup, our **main()** method prints a greeting and calls the **main_menu_loop()**.  Here the user will be shown the possible choices and prompted to pick one.  As always, we must check the user input and give an error message with a chance to pick again if they enter an invalid choice!  Don't forget to stress test as you build to make sure an invalid choice doesn't cause your app to error out.
+Upon startup, our **main()** method prints a greeting and calls the **main_menu_loop()**.  Here the user will be shown the possible choices and prompted to pick one.  As always, we must check the user input and give an error message with a chance to pick again if they enter an invalid choice!  Don't forget to stress test as you build to make sure an invalid choice does not cause your app to error out.
+
+```
+def main():
+    print('')
+    print('Welcome to the Department and Employee Management App')
+    print('-- This app can be used by company management to keep track of departments and their employees')
+    print('')
+    main_menu_loop()
+
+def main_menu_loop():
+    while True:
+        departments_menu()
+        choice = input("> ")
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
+            list_departments()
+        elif choice == "2":
+            department_selections_loop()
+        elif choice == "3":
+            create_department()
+        elif choice == "4":
+            update_department()
+        elif choice == "5":
+            delete_department()
+        else:
+            print("Invalid choice")
+```
 
 Run `python lib/cli.py` to see the starting menus.  Now the user is greeted upon startup and given department related choices as shown below:
 
@@ -98,8 +126,6 @@ Please select an option:
 4: Update department
 5: Delete department
 ```
-
-``
 
 ### `list_departments()`
 
