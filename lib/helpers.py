@@ -6,13 +6,14 @@ def exit_program():
     print("Goodbye!")
     exit()
 
-# We'll implement the department functions in this lesson
-
-
 def list_departments():
-    departments = Department.get_all()
-    for department in departments:
-        print(department)
+    print_separator()
+    print("Departments:")
+    print("------------")
+    print(" ")
+    for i, department in enumerate(Department.get_all(), start=1):
+        print(f'{i}. {department.name}')
+    print_separator()
 
 
 def find_department_by_name():
@@ -21,12 +22,33 @@ def find_department_by_name():
     print(department) if department else print(
         f'Department {name} not found')
 
+def select_department():
+    list_departments()
+    print(" ")
+    print("Enter number of department from list above:")
+    number = input("> ")
+    try:
+        department = Department.get_all()[int(number)-1]
+        return department
+    except Exception:
+        print("No department found")
 
-def find_department_by_id():
-    # use a trailing underscore not to override the built-in id function
-    id_ = input("Enter the department's id: ")
-    department = Department.find_by_id(id_)
-    print(department) if department else print(f'Department {id_} not found')
+def list_department(department):
+    print_separator()
+    print(f'You have selected {department.name}!')
+    print(f"It's location is {department.location}")
+    print(' ')
+    print(f"Employees of {department.name}:")
+    print("------------")
+    print(" ")
+    for i, employee in enumerate(department.employees(), start=1):
+        print(f'{i}. {employee.name}')
+    print_separator()
+
+def print_separator():
+    print(' ')
+    print("****************")
+    print(' ')
 
 
 def create_department():
@@ -91,5 +113,3 @@ def delete_employee():
     pass
 
 
-def list_department_employees():
-    pass

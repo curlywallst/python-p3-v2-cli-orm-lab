@@ -2,7 +2,7 @@
 
 ## Learning Goals
 
-- Implement a CLI for an ORM application
+- Implement a **client facing** CLI for an ORM application
 
 ---
 
@@ -14,12 +14,18 @@ interface (CLI).
 Run `pipenv install` to create your virtual environment and `pipenv shell` to
 enter the virtual environment.
 
-We'll continue to add a command line interface to the company ORM application
+In the previous lesson we created a command line interface to the company ORM application that could be used by a developer for testing of their CLI methods.  For this lab, we will reimagine our CLI to be used by the manager of a company (not a developer) to keep track of departments and their employees.  
+
+The models represent the backend of our application, while the cli and its helpers represent the client facing frontend.
+
+The formatting and client flow through the application is where your creativity can be shown!  Think about what the user would want to see, how it should be laid out and the ease of use!
+
+<!-- We'll continue to add a command line interface to the company ORM application
 from the previous lesson:
 
-![company erd](https://curriculum-content.s3.amazonaws.com/7134/python-p3-v2-orm/department_employee_erd.png)
+![company erd](https://curriculum-content.s3.amazonaws.com/7134/python-p3-v2-orm/department_employee_erd.png) -->
 
-The directory structure is as follows:
+The directory structure remains as follows:
 
 ```console
 .
@@ -58,70 +64,143 @@ You can use the SQLITE EXPLORER extension to explore the initial database
 contents. (Another alternative is to run `python lib/debug.py` and use the
 `ipbd` session to explore the database)
 
+In this lab we will consider the **user experience**.  We want to show the user data in a way that a non-developer would expect and think about the ease of use from the user's point of view.  Here we will not show users objects returned from the __repr__ method, but take the objects returned from the ORM methods in the backend and format them in the frontend, much like react receives json from the backend and formats it for the user view.  We need to think about who the user is and how they will use our app.  In this case we have imagined the user to be a company manager that is tasked with creating and managing company departments and their repective employees.
+
+The manager is presented with the list of all the departments and given the option to see the list again, see the details of one department, create a department, delete a department, update a department or exit the app.
+
+We will still use helper functions to call ORM methods in the `Employee` and `Department`
+classes.
+
+Let's explore a few differences in this newly imagined app from the previous code along lesson:
+
 ---
 
 ### `cli.py` and `helpers.py`
 
-The file `lib/cli.py` contains a command line interface for our company database
-application. The CLI displays a menu of commands. Each numeric choice will call
-a function in `lib/helpers.py`. The starter code implements options `0` through
-`6`, calling ORM methods related to the `Department` class.
+The file `lib/cli.py` contains a command line interface outline for our client facing company database
+application. The CLI displays a menu of commands for the user to select from.
 
-Run `python lib/cli.py` and confirm options 0 through 6 work.
+Upon startup, our **main()** method prints a greeting and calls the **main_menu_loop()**.  Here the user will be shown the possible choices and prompted to pick one.  As always, we must check the user input and give an error message with a chance to pick again if they enter an invalid choice!  Don't forget to stress test as you build to make sure an invalid choice doesn't cause your app to error out.
+
+Run `python lib/cli.py` to see the starting menus.  Now the user is greeted upon startup and given department related choices as shown below:
 
 ```bash
+
+Welcome to the Department and Employee Management App
+-- This app can be used by company management to keep track of departments and their employees
+
 Please select an option:
+
 0. Exit the program
 1. List all departments
-2. Find department by name
-3. Find department by id
-4: Create department
-5: Update department
-6: Delete department
-7. List all employees
-8. Find employee by name
-9. Find employee by id
-10: Create employee
-11: Update employee
-12: Delete employee
-13: List all employees in a department
+2. Select a department to see details
+3: Create department
+4: Update department
+5: Delete department
 ```
 
-You will implement the helper functions related to the `Employee` class (options
-`7` through `13`). The file `lib/helpers.py` has a function for each option
-containing a `pass` statement. You need to update each function to replace the
-`pass` statement with code to implement the necessary functionality.
+``
 
-Each helper function should call ORM methods in the `Employee` and `Department`
-classes.
+### `list_departments()`
 
-### `list_employees()`
+As before, the `list_departments()` function in `lib/helpers.py` should get all departments stored in the database, then print each department on a new line.  But now, we will format this data as we print it to be shown to a non-developer.  We will number the list numerically, rather than exposing the database id to the user and format it in a more readable way as shown in the code below:
 
-Implement the `list_departments()` function in `lib/helpers.py`. The function
-should get all employees stored in the database, then print each employee on a
-new line.
+```py
+def list_departments():
+    print_separator()
+    print("Departments:")
+    print("------------")
+    print(" ")
+    for i, department in enumerate(Department.get_all(), start=1):
+        print(f'{i}. {department.name}')
+    print_separator()
+```
 
-Test the function by selecting option `7` when you run `python lib/cli.py`:
+`print_separator()` is a simple formatting method created just to keep our code DRY
+
+Test the list_departments method by selecting option `1` when you run `python lib/cli.py`:
 
 ```bash
 
+****************
+ 
+Departments:
+------------
+ 
+1. Payroll
+2. Human Resources
+ 
+****************
+ 
+ 
 Please select an option:
-....
-> 7
-<Employee 1: Amir, Accountant, Department ID: 1>
-<Employee 2: Bola, Manager, Department ID: 1>
-<Employee 3: Charlie, Manager, Department ID: 2>
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-<Employee 5: Hao, New Hires Coordinator, Department ID: 2>
+ 
+0. Exit the program
+1. List all departments
+2. Select a department to see details
+3: Create department
+4: Update department
+5: Delete department
 ```
 
-### `find_employee_by_name()`
+Now even if a department has been deleted, the numbers will be in numeric order starting from 1.  They now represent the **relative position** in the list of all departments.  If the user wants to see the details of the Payroll department they will pick 1 (which is index postion 0 in the list of all departments currently in the database and returned by our get_all ORM method in the Department model).
 
-The function `find_employee_by_name()` should prompt for a `name` and then find
-the `Employee` instance with that name and print their information, or print an
-error message if the employee does not exist.
+At this point, when a user is looking at a numbered list of all departments, they will want the ability exit the app, to see one department, or to add, update or delete a department.  In our cli.py we have called this the **departments_menu**.  
 
-Test the function by selecting option `8` when you run `python lib/cli.py`.
+If the user chooses to see the details of a single department they pick 2.  This sends us to another looping function that will let the user choose a department, see the details of the chosen department and be presented with a different set of options relevant to one chosen department.
+
+### `department_selections_loop()`
+
+```py
+def department_selections_loop():
+   department = select_department()
+    while True:
+        list_department(department)
+        employees_menu(department)
+        choice = input("> ")
+        if choice == "0":
+            exit_program()
+        elif choice == "1":
+            list_department_employees(department)
+        elif choice == "2":
+            employee = select_employee(department)
+            employee_selections(employee)
+        elif choice == "3":
+            create_employee(department)
+        elif choice == "4":
+            main_menu_loop()
+```
+
+The method `select_department()` should prompt the user to pick a department from the list generated by list_departments and print the information for that department (including a list of employees of the selected department), or print an error message if the department does not exist.  If the department does exist it is returned and stored in a variable `department`
+
+```py
+def select_department():
+    list_departments()
+    print(" ")
+    print("Enter number of department from list above:")
+    number = input("> ")
+    try:
+        department = Department.get_all()[int(number)-1]
+        return department
+    except Exception:
+        print("No department found")
+        ```
+
+If the user selects the department numbered 1 in the list, it is the 1st department in the list of all departments returned by the ORM method get_all.  To access the 1st department we need to use index of 0 to retrieve the correct department object from the list of all department objects.  If the user wants the 2nd department it would be index 1 in the list, and so forth.  Department.get_all() returns the list and Department.get_all()[int(number)-1] retrieves the proper department object from the list of objects to display.  
+
+
+
+
+
+
+
+
+
+
+
+Now the user 
+
+Test the function by selecting option `2` when you run `python lib/cli.py`.
 
 Try entering a name that exists in the database:
 
@@ -137,30 +216,6 @@ Try entering a name not in the database:
 > 8
 Enter the employee's name: Fred
 Employee Fred not found
-```
-
-### `find_employee_by_id()`
-
-The function `find_employee_by_id()` should prompt for an id and then find the
-Employee instance with that id and print their information, or print an error
-message if the employee does not exist.
-
-Test the function by selecting option `9` when you run `python lib/cli.py`.
-
-Try entering an id that exists in the database:
-
-```bash
-> 9
-Enter the employee's id: 2
-<Employee 2: Bola, Manager, Department ID: 1>
-```
-
-Try entering an id not in the database:
-
-```bash
-> 9
-Enter the employee's id: 99
-Employee 99 not found
 ```
 
 ### `create_employee()`
