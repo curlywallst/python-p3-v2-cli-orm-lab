@@ -237,7 +237,14 @@ def list_department(department):
     print_separator()
     print(f'You have selected {department.name}!')
     print(f"It's location is {department.location}")
-    print(' ')
+    list_department_employees(department)
+```
+
+In list department we print the details of the selected department and call the `list_department_employees` function to print the employees for that depatment.
+
+```py
+def list_department_employees(department):
+    print_separator()
     print(f"Employees of {department.name}:")
     print("------------")
     print(" ")
@@ -290,6 +297,19 @@ Please select an option:
 > 
 ```
 
+Now if the user wants to add an employee, we know they want to add an employee to THIS department.  We do not need to prompt the user for the department.  We have used string interpolation in the employees_menu() to clarify this for the user.
+
+When the user picks `3` in the `department_selections_loop()`, the create_employee function is called, passing along the selected department.
+
+```py
+def create_employee(department):
+    name = input("Employee name:  ")
+    title = input("Job Title:  ")
+    Employee.create(name, title, department.id)
+    list_department_employees(department)
+```
+
+Test the function by selecting option `3` in the `department_selections_loop()` you will see:
 
 
 
@@ -297,7 +317,19 @@ Please select an option:
 
 
 
-Test the function by selecting option `2` when you run `python lib/cli.py`.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Try entering a name that exists in the database:
 
