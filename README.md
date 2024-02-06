@@ -186,7 +186,7 @@ def departments_menu():
     print("3: Create department")
     print("4: Update department")
     print("5: Delete department")
-    ```
+```
 
 If the user chooses to see the details of a single department they pick 2.  This sends us to another looping function, the `department_selection_loop` that will let the user choose a department, see the details of the chosen department and be presented with a different set of options relevant to one chosen department.
 
