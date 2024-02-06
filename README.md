@@ -225,7 +225,7 @@ def select_department():
         return department
     except Exception:
         print("No department found")
-        ```
+```
 
 If the user selects the department numbered 1 in the list of departments to pick the Payroll Department, we know it is the 1st department in the list of all departments returned by the ORM method get_all.  To access the 1st department we need to use index of 0 to retrieve the correct department object from the list of all department objects.  If the user wants the 2nd department it would be index 1 in the list, and so forth.  Department.get_all() returns the list and Department.get_all()[int(number)-1] retrieves the proper department object from the list of objects to display.  The chosen department is passed to the `list_department` function to print out the details of the chosen deparment **including its employees**.
 
