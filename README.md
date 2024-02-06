@@ -227,7 +227,7 @@ def select_department():
         print("No department found")
 ```
 
-If the user selects the department numbered 1 in the list of departments to pick the Payroll Department, we know it is the 1st department in the list of all departments returned by the ORM method get_all.  To access the 1st department we need to use index of 0 to retrieve the correct department object from the list of all department objects.  If the user wants the 2nd department it would be index 1 in the list, and so forth.  Department.get_all() returns the list and Department.get_all()[int(number)-1] retrieves the proper department object from the list of objects to display.  The chosen department is passed to the `list_department` function to print out the details of the chosen deparment **including its employees**.
+For example, if the user selects the department which is numbered 1 in the list of all departments (in our example 1 is the Payroll Department), we know it is the 1st department in the list of all departments returned by the ORM method get_all.  To access the 1st department we need to use index of 0 to retrieve the correct department object from the list of all department objects.  If the user wants the 2nd department it would be index 1 in the list, and so forth.  Department.get_all() returns the list and Department.get_all()[int(number)-1] retrieves the proper department object from the list of objects to display.  The chosen department is passed to the `list_department` function to print out the details of the chosen deparment **including its employees**.
 
 
 ### `list_department()`
@@ -240,9 +240,10 @@ def list_department(department):
     list_department_employees(department)
 ```
 
-In list department we print the details of the selected department and call the `list_department_employees` function to print the employees for that depatment.
+In list department, after we print the details of the selected department, we call the `list_department_employees` function to print the employees for that department.
 
 ```py
+
 def list_department_employees(department):
     print_separator()
     print(f"Employees of {department.name}:")
@@ -269,7 +270,7 @@ def employees_menu(department):
 
 ```
 
-Test the code by selecting 1 from the department list.  You will see the following:
+Test the code by selecting `1` from the list of all departments (after having chosen `2` in the main_menu to select a department to see its details).  You will see the following:
 
 ```
  
