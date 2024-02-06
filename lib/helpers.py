@@ -37,19 +37,16 @@ def list_department(department):
     print_separator()
     print(f'You have selected {department.name}!')
     print(f"It's location is {department.location}")
-    print(' ')
+    list_department_employees(department)
+
+def list_department_employees(department):
+    print_separator()
     print(f"Employees of {department.name}:")
     print("------------")
     print(" ")
     for i, employee in enumerate(department.employees(), start=1):
         print(f'{i}. {employee.name}')
     print_separator()
-
-def print_separator():
-    print(' ')
-    print("****************")
-    print(' ')
-
 
 def create_department():
     name = input("Enter the department's name: ")
@@ -86,30 +83,21 @@ def delete_department():
     else:
         print(f'Department {id_} not found')
 
+def create_employee(department):
+    name = input("Employee name:  ")
+    title = input("Job Title:  ")
+    Employee.create(name, title, department.id)
+    list_department_employees(department)
 
-# You'll implement the employee functions in the lab
-
-def list_employees():
-    pass
-
-
-def find_employee_by_name():
-    pass
-
-
-def find_employee_by_id():
-    pass
-
-
-def create_employee():
-    pass
 
 
 def update_employee():
     pass
 
-
 def delete_employee():
     pass
 
-
+def print_separator():
+    print(' ')
+    print("****************")
+    print(' ')

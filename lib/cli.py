@@ -6,12 +6,12 @@ from helpers import (
     create_department,
     update_department,
     delete_department,
-    list_employees,
-    find_employee_by_name,
-    find_employee_by_id,
+    # list_employees,
+    # find_employee_by_name,
+    # find_employee_by_id,
     create_employee,
-    update_employee,
-    delete_employee,
+    # update_employee,
+    # delete_employee,
     list_department
 )
 
