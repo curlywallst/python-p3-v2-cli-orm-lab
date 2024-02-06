@@ -14,7 +14,7 @@ interface (CLI).
 Run `pipenv install` to create your virtual environment and `pipenv shell` to
 enter the virtual environment.
 
-In the previous lesson we created a command line interface to the company ORM application that could be used by a developer for testing of their CLI methods.  For this lab, we will reimagine our CLI to be used by the manager of a company (not a developer) to keep track of departments and their employees.  
+In the previous lesson we created a command line interface to the company ORM application that could be used by a developer for testing of their ORM methods.  For this lab, we will reimagine our CLI to be used by the manager of a company (not a developer) to keep track of departments and their employees.  
 
 The models represent the backend of our application, while the cli and its helpers represent the client facing frontend.
 
