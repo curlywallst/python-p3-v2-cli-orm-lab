@@ -193,19 +193,17 @@ If the user chooses to see the details of a single department they pick 2.  This
 ### `department_selections_loop()`
 
 ```py
-def department_selections_loop():
-   department = select_department()
+    if not department: department = select_department()
+    list_department(department)
     while True:
-        list_department(department)
         employees_menu(department)
         choice = input("> ")
         if choice == "0":
             exit_program()
         elif choice == "1":
-            list_department_employees(department)
+            list_department(department)
         elif choice == "2":
-            employee = select_employee(department)
-            employee_selections(employee)
+            employee_selections_loop(department)
         elif choice == "3":
             create_employee(department)
         elif choice == "4":
@@ -216,15 +214,16 @@ Firstly the method `select_department()` prompts the user to pick a department f
 
 ```py
 def select_department():
-    list_departments()
-    print(" ")
-    print("Enter number of department from list above:")
-    number = input("> ")
-    try:
-        department = Department.get_all()[int(number)-1]
-        return department
-    except Exception:
-        print("No department found")
+    while True:
+        list_departments()
+        print(" ")
+        print("Enter number of department from list above:")
+        number = input("> ")
+        try:
+            department = Department.get_all()[int(number)-1]
+            return department
+        except Exception:
+            print("That number is not valid - please try again")
 ```
 
 For example, if the user selects the department which is numbered 1 in the list of all departments (in our example 1 is the Payroll Department), we know it is the 1st department in the list of all departments returned by the ORM method get_all.  To access the 1st department we need to use index of 0 to retrieve the correct department object from the list of all department objects.  If the user wants the 2nd department it would be index 1 in the list, and so forth.  Department.get_all() returns the list and Department.get_all()[int(number)-1] retrieves the proper department object from the list of objects to display.  The chosen department is passed to the `list_department` function to print out the details of the chosen deparment **including its employees**.
@@ -310,7 +309,7 @@ The function `create_employee()` should:
    or `department_id` property setter methods.
 3. Print a message indicating that the `Employee` object was successfully
    created, or print an error message if an exception is thrown.
-   
+
 When the user picks `3` in the `department_selections_loop()`, the create_employee function is called, passing along the selected department.
 
 ```py
@@ -323,6 +322,7 @@ def create_employee(department):
 
 Test the function by selecting option `3` in the `department_selections_loop()`.  After adding a new employee to the given department, we call `list_department_employees` to rerender the list of the chosen department's employees that now includes the new employee.
 
+Next, if we want to see the details of an existing employee in the selected department we select 2, "Select a Payroll employee from the list above to see details".  
 
 
 
