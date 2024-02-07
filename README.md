@@ -300,6 +300,17 @@ Please select an option:
 
 Now if the user wants to add an employee, we know they want to add an employee to THIS department.  We do not need to prompt the user for the department.  We have used string interpolation in the employees_menu() to clarify this for the user.
 
+### `create_employee()`
+
+The function `create_employee()` should:
+
+1. Prompt for and read in a name, job title, and department id.
+2. Create and persist a new `Employee` class instance, surrounding the code in a
+   `try/except` block in case an exception is thrown by the `name`, `job_title`,
+   or `department_id` property setter methods.
+3. Print a message indicating that the `Employee` object was successfully
+   created, or print an error message if an exception is thrown.
+   
 When the user picks `3` in the `department_selections_loop()`, the create_employee function is called, passing along the selected department.
 
 ```py
@@ -310,7 +321,9 @@ def create_employee(department):
     list_department_employees(department)
 ```
 
-Test the function by selecting option `3` in the `department_selections_loop()` you will see:
+Test the function by selecting option `3` in the `department_selections_loop()`.  After adding a new employee to the given department, we call `list_department_employees` to rerender the list of the chosen department's employees that now includes the new employee.
+
+
 
 
 
@@ -348,16 +361,7 @@ Enter the employee's name: Fred
 Employee Fred not found
 ```
 
-### `create_employee()`
 
-The function `create_employee()` should:
-
-1. Prompt for and read in a name, job title, and department id.
-2. Create and persist a new `Employee` class instance, surrounding the code in a
-   `try/except` block in case an exception is thrown by the `name`, `job_title`,
-   or `department_id` property setter methods.
-3. Print a message indicating that the `Employee` object was successfully
-   created, or print an error message if an exception is thrown.
 
 Test the function by selecting option `10` when you run `python lib/cli.py`.
 

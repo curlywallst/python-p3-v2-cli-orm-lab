@@ -185,3 +185,14 @@ class Employee:
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+    
+    def department(self):
+        from models.department import Department
+        sql = """
+            SELECT * FROM departments
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.department_id,),)
+
+        row = CURSOR.fetchone()
+        return Department.instance_from_db(row)

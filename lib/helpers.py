@@ -23,15 +23,16 @@ def find_department_by_name():
         f'Department {name} not found')
 
 def select_department():
-    list_departments()
-    print(" ")
-    print("Enter number of department from list above:")
-    number = input("> ")
-    try:
-        department = Department.get_all()[int(number)-1]
-        return department
-    except Exception:
-        print("No department found")
+    while True:
+        list_departments()
+        print(" ")
+        print("Enter number of department from list above:")
+        number = input("> ")
+        try:
+            department = Department.get_all()[int(number)-1]
+            return department
+        except Exception:
+            print("That number is not valid - please try again")
 
 def list_department(department):
     print_separator()
@@ -89,7 +90,22 @@ def create_employee(department):
     Employee.create(name, title, department.id)
     list_department_employees(department)
 
-
+def select_employee(department):
+    while True:
+        list_department_employees(department)
+        print(" ")
+        print("Enter number of employee from list above:")
+        num = input("> ")
+        try:
+            employee = department.employees()[int(num) - 1]
+            print_separator()
+            print(f'Department: {department.name}')
+            print(f'Name: {employee.name}')
+            print(f'Title: {employee.job_title}')
+            print_separator()
+            return employee
+        except Exception:
+            print("That number is not valid - please try again")
 
 def update_employee():
     pass
