@@ -65,8 +65,7 @@ def department_selections_loop(department=None):
         elif choice == "1":
             list_department(department)
         elif choice == "2":
-            employee = select_employee(department)
-            employee_selections_loop(employee)
+            employee_selections_loop(department)
         elif choice == "3":
             create_employee(department)
         elif choice == "4":
@@ -82,7 +81,8 @@ def employees_menu(department):
     print(f"3. Add new employee to {department.name}")
     print(f"4: Go back to list of departments")
 
-def employee_selections_loop(employee):
+def employee_selections_loop(department):
+    employee = select_employee(department)
     while True: 
         employee_menu()
         choice = input("> ")
