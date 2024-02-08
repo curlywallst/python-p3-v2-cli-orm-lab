@@ -193,6 +193,7 @@ If the user chooses to see the details of a single department they pick 2.  This
 ### `department_selections_loop()`
 
 ```py
+def department_selections_loop(department=None):
     if not department: department = select_department()
     list_department(department)
     while True:
