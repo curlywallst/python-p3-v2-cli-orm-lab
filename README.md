@@ -256,7 +256,6 @@ def list_department_employees(department):
 
 Now we see the Payroll Department, its location and its employees.  Thinking about what a user would want to do at this point, they would want the ability to see the employees of the Payroll Department again, select one employee to see their details, add a new employee to the Payroll Department or return to the main_menu_loop.  There is no need, when adding an employee, to ask the user which department to add them to - we know we are talking about the Payroll Department!  This menu is printed by the `employees_menu`
 
-
 ```py
 def employees_menu(department): 
     print(" ")
@@ -323,244 +322,42 @@ def create_employee(department):
 
 Test the function by selecting option `3` in the `department_selections_loop()`.  After adding a new employee to the given department, we call `list_department_employees` to rerender the list of the chosen department's employees that now includes the new employee.
 
-Next, if we want to see the details of an existing employee in the selected department we select 2, "Select a Payroll employee from the list above to see details".  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Try entering a name that exists in the database:
-
-```bash
-> 8
-Enter the employee's name: Dani
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-```
-
-Try entering a name not in the database:
-
-```bash
-> 8
-Enter the employee's name: Fred
-Employee Fred not found
-```
-
-
-
-Test the function by selecting option `10` when you run `python lib/cli.py`.
-
-```bash
-> 10
-Enter the employee's name: Ira
-Enter the employee's job title: Manager
-Enter the employee's department id:1
-Success: <Employee 6: Ira, Manager, Department ID: 1>
-```
-
-Confirm the employee was added to the database by selecting option `7` to list
-all employees:
-
-```bash
-> 7
-<Employee 1: Amir, Accountant, Department ID: 1>
-<Employee 2: Bola, Manager, Department ID: 1>
-<Employee 3: Charlie, Manager, Department ID: 2>
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-<Employee 5: Hao, New Hires Coordinator, Department ID: 2>
-<Employee 6: Ira, Manager, Department ID: 1>
-```
-
-Try entering invalid data for name or job title:
-
-```bash
-> 10
-Enter the employee's name:
-Enter the employee's job title: Programmer
-Enter the employee's department id: 1
-Error creating employee:  Name must be a non-empty string
-```
-
-Try entering an invalid department id:
-
-```bash
-> 10
-Enter the employee's name: Jani
-Enter the employee's job title: Accountant
-Enter the employee's department id:99
-Error creating employee:  department_id must reference a department in the database
-```
-
-### `update_employee()`
-
-The function `update_employee()` should:
-
-1. Prompt for and read in the employee id.
-2. Print an error message if the employee is not in the database. If the
-   employee is in the database, attempt to do the following steps within a
-   `try-except` block to catch any exceptions, printing an error message if an
-   exception is thrown.
-3. Prompt for a new name to update the `name` attribute (property setter may
-   throw an exception).
-4. Prompt for a new job title to update the `job_title` attribute (property
-   setter may throw an exception).
-5. Prompt for the employee's new department id to update the `department_id`
-   attribute (property setter may throw an exception).
-6. Update the employee in the database.
-7. Print a success message after a successful update, or print an appropriate
-   error message if an exception is thrown.
-
-Test the function by selecting option `11` when you run `python lib/cli.py`.
-
-```bash
-> 11
-Enter the employee's id: 3
-Enter the employees's new name: Charles
-Enter the employee's new job title:Director
-Enter the employees's new department id: 1
-Success: <Employee 3: Charles, Director, Department ID: 1>
-```
-
-Confirm the database was updated by listing all employees:
-
-```bash
-> 7
-<Employee 1: Amir, Accountant, Department ID: 1>
-<Employee 2: Bola, Manager, Department ID: 1>
-<Employee 3: Charles, Director, Department ID: 1>
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-<Employee 5: Hao, New Hires Coordinator, Department ID: 2>
-<Employee 6: Ira, Manager, Department ID: 1>
-```
-
-Try entering an invalid employee id:
-
-```bash
-> 11
-Enter the employee's id: 99
-Employee 99 not found
-```
-
-Try entering an invalid name:
-
-```bash
-> 11
-Enter the employee's id: 4
-Enter the employees's new name:
-Error updating employee:  name must be a non-empty string
-```
-
-Try entering an invalid job title:
-
-```bash
-> 11
-Enter the employee's id: 4
-Enter the employees's new name: Danielle
-Enter the employee's new job title:
-Error updating employee:  job_title must be a non-empty string
-```
-
-Try entering an invalid department id:
-
-```bash
-> 11
-Enter the employee's id: 4
-Enter the employees's new name: Danielle
-Enter the employee's new job title:Senior Benefits Coordinator
-Enter the employees's new department id: 99
-Error updating employee:  department_id must reference a department in the database
-```
-
-### `delete_employee()`
-
-The function `delete_employee()` should prompt for the employee `id` and delete
-the employee from the database if it exists and print a confirmation message, or
-print an error message if the employee is not in the database.
-
-Test the function by selecting option `12` when you run `python lib/cli.py`.
-
-```bash
-> 12
-Enter the employee's id: 1
-Employee 1 deleted
-```
-
-Confirm the employee was deleted by listing all employees:
-
-```bash
-> 7
-<Employee 2: Bola, Manager, Department ID: 1>
-<Employee 3: Charles, Director, Department ID: 1>
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-<Employee 5: Hao, New Hires Coordinator, Department ID: 2>
-<Employee 6: Ira, Manager, Department ID: 1>
-```
-
-Try entering a non-existent employee id:
-
-```bash
-> 12
-Enter the employee's id: 99
-Employee 99 not found
+If we want to see the details of an existing employee in the selected department we select 2, "Select a Payroll employee from the list above to see details".  The user is prompted to pick a user for the department's employees.  This sends us to the ` employee_selections_loop`.  Here the user can view the user details and update or delete the user.  For instance if we pick `1` for Amir in the Payroll Department we see:
 
 ```
-
-### `list_department_employees()`
-
-You may want to reseed the database to get the same output.
-
-The function `list_department_employees()` should:
-
-1. prompt for a department id.
-2. find the department with that id from the database.
-3. if the department exists in the database, get the department's employees
-   (HINT: call the `employees()` instance method) and loop to print each
-   employee's data on a separate line.
-4. if the department does not exist in the database, print an error message.
-
-Test the function by selecting option `13` when you run `python lib/cli.py`.
-
-```bash
-> 13
-Enter the department's id: 1
-<Employee 1: Amir, Accountant, Department ID: 1>
-<Employee 2: Bola, Manager, Department ID: 1>
+****************
+ 
+Employees of Payroll:
+------------
+ 
+1. Amir
+2. Bola
+ 
+****************
+ 
+ 
+Enter number of employee from list above:
+> 1
+ 
+****************
+ 
+Department: Payroll
+Name: Amir
+Title: Accountant
+ 
+****************
+ 
+ 
+Please select an option:
+ 
+0. Exit the program
+1. Update employee
+2: Delete employee
+3: Go back to list of employees
+> 
 ```
 
-```bash
-> 13
-Enter the department's id: 2
-<Employee 3: Charlie, Manager, Department ID: 2>
-<Employee 4: Dani, Benefits Coordinator, Department ID: 2>
-<Employee 5: Hao, New Hires Coordinator, Department ID: 2>
-```
+This view is specific to Amir.  We need the ability hear to update or delete the employee or to go back to the list of all the employees in Payroll.
 
-Try an id that does not match an existing department:
 
-```bash
-> 13
-Enter the department's id: 99
-Department 99 not found
-```
 
----
-
-Success! Use git to push and submit your lab to Canvas.
-
----
